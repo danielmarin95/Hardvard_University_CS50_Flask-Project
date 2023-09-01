@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    My Reviews List
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="form-group col-6">
+            <input autocomplete="off" autofocus class="form-control" id="searchTitle" name="searchTitle" onkeyup="searchTitle()" placeholder="Search by title" type="text">
+        </div>
+        <div class="form-group col-6">
+            <input autocomplete="off" autofocus class="form-control" id="searchAuthor" name="searchAuthor" onkeyup="searchAuthor()" placeholder="Search by author" type="text">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-2" style="margin: 0.4rem">
+            <a href="/create-desired-book" class="btn btn-primary" style="text-align: right;">Add new book to the list</a>
+        </div>
+        <div class="form-group col-2" style="margin: 0.4rem">
+            <!--A button will show depending on which view if being shown-->
+            {% if personal_list == False %}
+                <a href="/only-my-list" class="btn btn-success" style="text-align: right;">Show my personal list</a>
+            {% else %}
+                <a href="/desired-books" class="btn btn-warning" style="text-align: right;">Show general list</a>
+            {% endif %}
+        </div>
+    </div>
+    <table class="table table-striped" id="books_table">
+        <col style="width:40%">
+	    <col style="width:40%">
+        <col style="width:20%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <!--This is to avoid and issue with the personal view and the remove buttons-->
+                    {% if personal_list == False %}
+                        {% set added = [] %}
+                        {% for desired_books_user in desired_books_users %}
+                            {% if desired_books_user.desired_book_id == book.id %}
+                                {% if added.append('0') %}{% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        <!--A different button will show depending if the book is already on the desired list or not-->
+                        {% if added|length == 0 %}
+                            <td><a href="/add-to-list?id={{ book.id }}"><btn class="btn btn-primary" value="Add to List">Add to List</btn></a></td>
+                        {% else %}
+                            <td><a href="/remove-from-list?id={{ book.id }}"><btn class="btn btn-danger" value="Remove from List">Remove from List</btn></a></td>
+                        {% endif %}
+                    {% else %}
+                        <td><a href="/remove-from-list?id={{ book.desired_book_id }}"><btn class="btn btn-danger" value="Remove from List">Remove from List</btn></a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="/static/script.js"></script>
+{% endblock %}
+

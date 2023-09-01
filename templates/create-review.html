@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create Review
+{% endblock %}
+
+{% block main %}
+    <form action="/create-review" method="post">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="form-group col-6">
+                <input autocomplete="off" autofocus class="form-control" name="title" placeholder="Title" required type="text">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="form-group col-6">
+                <input autocomplete="off" autofocus class="form-control" name="author" placeholder="Author" required type="text">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="form-group col-6">
+                <input autocomplete="off" autofocus class="form-control" name="points" placeholder="Points" required type="number" min="0" max="5">
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-3"></div>
+                <div class="form-group col-6">
+                <textarea autocomplete="off" autofocus class="form-control" name="review" placeholder="Review" required rows="10"></textarea>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit review</button>
+    </form>
+{% endblock %}
